@@ -3,9 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const connect = await mongoose.connect(process.env.MONGO_URI);
-    console.log(
-      `> You have access to the database of ${connect.connection.host}`
-    );
+    console.log(`> You have access to the database ${connect.connection.host}`);
   } catch (error) {
     console.log(error);
     process.exit(1);
