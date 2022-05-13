@@ -1,9 +1,11 @@
 const express = require('express');
 require('dotenv').config();
+const connectDB = require('./config/db');
 const { errorHandler } = require('./middleware/errorMiddleware');
 const productRouter = require('./routes/productRoutes.js');
 const homepageRouter = require('./routes/homepageRoutes');
 
+connectDB();
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -20,5 +22,5 @@ app.use(errorHandler);
 
 // Server listening
 app.listen(port, () => {
-  console.log(`Server is online on port ${port}`);
+  console.log(`> Server is online on port ${port}`);
 });
