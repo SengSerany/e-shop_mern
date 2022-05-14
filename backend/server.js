@@ -1,7 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
@@ -28,6 +28,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 60 * 60 * 1000 },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+    }),
   })
 );
 app.use(passport.initialize());

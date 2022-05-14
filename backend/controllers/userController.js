@@ -36,14 +36,13 @@ const createUserAccount = asyncHandler(async (req, res) => {
 });
 
 // POST - Create user session
-const createUserSession = (req, res) => {
+const createUserSession = asyncHandler(async (req, res) => {
   res.status(200).json({ endpoint: 'Login user', user: req.user });
-};
+});
 
 // GET - Show user account
 const showUserAccount = asyncHandler(async (req, res) => {
-  console.log(req.user);
-  res.status(200).json({ endpoint: 'Profile user' });
+  res.status(200).json({ endpoint: 'Profile user', user: req.user });
 });
 
 module.exports = {
