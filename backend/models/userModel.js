@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const passportLocalMongoose = require('passport-local-mongoose');
+const { UserExistsError } = require('passport-local-mongoose/lib/errors');
 
-const userSchema = mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -16,12 +18,10 @@ const userSchema = mongoose.Schema(
       },
       required: [true, 'You must add a username'],
     },
-    password: {
-      type: String,
-      required: [true, 'You must add a username'],
-    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('User', userSchema);
+UserSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+
+module.exports = mongoose.model('User', UserSchema);

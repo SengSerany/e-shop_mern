@@ -1,10 +1,7 @@
 const asyncHandler = require('express-async-handler');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../model/userModel');
+const User = require('../models/userModel');
 
-// POST - Create user aaccount
+// POST - Create user account
 const createUserAccount = asyncHandler(async (req, res) => {
   const { username, email, password, passwordConfirm } = req.body;
   if (!username || !email || !password || !passwordConfirm) {
@@ -23,47 +20,29 @@ const createUserAccount = asyncHandler(async (req, res) => {
     throw new Error('This email is already used');
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  const user = await User.create({
-    username,
-    email,
-    password: hashedPassword,
-  });
-
-  res.status(200).json({ endpoint: 'Register user', user: user });
+  await User.register(
+    new User({ username, email }),
+    req.body.password,
+    (err, user) => {
+      if (err) {
+        console.log('error while user register!', err);
+        res.status(400);
+        throw new Error('Your account could not be saved');
+      } else {
+        res.status(200).json({ endpoint: 'Register user', user: user });
+      }
+    }
+  );
 });
 
 // POST - Create user session
-const createUserSession = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    res.status(400);
-    throw new Error('All field must be completed');
-  }
-
-  if (!validator.isEmail(email)) {
-    res.status(400);
-    throw new Error('Please provide valid email');
-  }
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    res.status(400);
-    throw new Error('This email is wrong or your are not register');
-  }
-
-  if (await bcrypt.compare(password, user.password)) {
-    res.status(200).json({ endpoint: 'Login user', user: user });
-  } else {
-    res.status(400);
-    throw new Error('The password is wrong');
-  }
-});
+const createUserSession = (req, res) => {
+  res.status(200).json({ endpoint: 'Login user', user: req.user });
+};
 
 // GET - Show user account
 const showUserAccount = asyncHandler(async (req, res) => {
+  console.log(req.user);
   res.status(200).json({ endpoint: 'Profile user' });
 });
 
