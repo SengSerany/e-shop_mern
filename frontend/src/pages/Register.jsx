@@ -8,7 +8,7 @@ function Register() {
     passwordConfirm: '',
   });
 
-  const [email, password, passwordConfirm] = registerData;
+  const { email, password, passwordConfirm } = registerData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
