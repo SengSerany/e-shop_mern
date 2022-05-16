@@ -59,16 +59,21 @@ header {
   margin-left: 0.7rem;
 }
 
-.user-form {
+.user-form-login {
   max-width: 55rem;
   margin: 5rem auto;
+}
+
+.user-form-register {
+  max-width: 55rem;
+  margin: 2rem auto;
 }
 
 @media (max-width: 992px) {
   .form-register {
     margin-top: 0;
   }
-  .user-form {
+  .user-form-login {
     margin: 2rem auto;
   }
 }

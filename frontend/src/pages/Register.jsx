@@ -1,13 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
+import { register, resetAuthState } from '../features/auth/authSlice';
 
 function Register() {
   const [registerData, setRegisterData] = useState({
+    username: '',
     email: '',
     password: '',
     passwordConfirm: '',
   });
-  const { email, password, passwordConfirm } = registerData;
+  const { username, email, password, passwordConfirm } = registerData;
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,12 +31,42 @@ function Register() {
     });
   };
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      navigate('/');
+      toast.success('Welcome ! You are now subscribe !');
+    }
+
+    dispatch(resetAuthState());
+  }, [dispatch, isError, isSuccess, message, navigate]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (password !== passwordConfirm) {
+      toast.error("Password don't match");
+    } else {
+      const userData = {
+        username,
+        email,
+        password,
+        passwordConfirm,
+      };
+
+      dispatch(register(userData));
+    }
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <div className="user-form text-center">
+    <div className="user-form-register text-center">
       <Row>
         <Col lg={4}>
           <h1 className="h1-form-register">Register</h1>
@@ -35,6 +77,16 @@ function Register() {
         <Col>
           <br />
           <Form className="form-register" onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="username">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                name="username"
+                type="username"
+                value={username}
+                placeholder="Enter username"
+                onChange={handleChange}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email address</Form.Label>
               <Form.Control

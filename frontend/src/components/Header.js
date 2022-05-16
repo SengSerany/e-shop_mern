@@ -1,8 +1,11 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Header() {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <header>
       <br />
@@ -35,16 +38,33 @@ function Header() {
       <Container>
         <br />
         <Nav className="justify-content-end" activeKey="/home">
-          <Nav.Item>
-            <Link to="/login" eventkey="link-login">
-              <FaSignInAlt /> Login
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link to="/register" eventkey="link-register">
-              <FaUser /> Register
-            </Link>
-          </Nav.Item>
+          {user ? (
+            <>
+              <Nav.Item>
+                <Link to="/profile">
+                  <FaUser /> {user.username}
+                </Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link to="/">
+                  <FaSignOutAlt /> Log out
+                </Link>
+              </Nav.Item>
+            </>
+          ) : (
+            <>
+              <Nav.Item>
+                <Link to="/login" eventkey="link-login">
+                  <FaSignInAlt /> Login
+                </Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link to="/register" eventkey="link-register">
+                  <FaUser /> Register
+                </Link>
+              </Nav.Item>
+            </>
+          )}
         </Nav>
       </Container>
     </header>

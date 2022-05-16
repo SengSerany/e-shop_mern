@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
         validator: validator.isEmail,
         message: 'Please provide valid email',
       },
-      required: [true, 'You must add a username'],
+      required: [true, 'You must add an email'],
     },
   },
   { timestamps: true }
