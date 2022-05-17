@@ -38,7 +38,7 @@ function Header() {
       <Container>
         <br />
         <Nav className="justify-content-end" activeKey="/home">
-          {user ? (
+          {user.id !== null ? (
             <>
               <Nav.Item>
                 <Link to="/profile">

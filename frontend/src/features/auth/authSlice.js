@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
 const initialState = {
-  user: null,
+  user: { _id: null, username: null, email: null },
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -32,6 +32,23 @@ export const login = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       return await authService.login(userData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const handleSession = createAsyncThunk(
+  'auth/session',
+  async (endpoint, thunkAPI) => {
+    try {
+      return await authService.handleSession(endpoint);
     } catch (error) {
       const message =
         (error.response &&
@@ -97,6 +114,16 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(handleSession.fulfilled, (state, action) => {
+        state.user = {
+          id: action.payload._id,
+          username: action.payload.username,
+          email: action.payload.email,
+        };
+      })
+      .addCase(handleSession.rejected, (state) => {
+        state.user = null;
       });
   },
 });

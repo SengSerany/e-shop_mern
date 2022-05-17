@@ -35,9 +35,13 @@ function Login() {
       toast.error(message);
     }
 
-    if (isSuccess || user) {
+    if (isSuccess) {
       navigate('/');
       toast.success('Welcome ! You are now logged !');
+    }
+
+    if (user.id !== null) {
+      navigate('/');
     }
 
     dispatch(resetAuthState());

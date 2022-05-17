@@ -15,6 +15,16 @@ const login = async (userData) => {
   return response.data;
 };
 
+const handleSession = async (endpoint) => {
+  const response = await fetch(`${API_URL}/${endpoint}`);
+  const data = await response.json();
+  if (data.user) {
+    return data.user;
+  } else {
+    return { _id: null, username: null, email: null };
+  }
+};
+
 const logout = async () => {
   const response = await axios.delete(`${API_URL}/logout`);
 
@@ -24,6 +34,7 @@ const logout = async () => {
 const authService = {
   register,
   login,
+  handleSession,
   logout,
 };
 
