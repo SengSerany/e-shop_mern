@@ -37,8 +37,8 @@ function Register() {
     }
 
     if (isSuccess) {
-      navigate('/');
-      toast.success('Welcome ! You are now subscribe !');
+      navigate('/login');
+      toast.success('Welcome ! You are subscribe ! You can now login !');
     }
 
     dispatch(resetAuthState());

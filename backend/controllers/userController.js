@@ -54,8 +54,10 @@ const showUserAccount = asyncHandler(async (req, res) => {
 
 // DELETE - Delete session user
 const deleteSessionUser = asyncHandler(async (req, res) => {
-  res.logout();
+  req.logout();
+  req.session.destroy();
   res
+    .clearCookie('connect.sid')
     .status(200)
     .json({ endpoint: 'Delete session user', user: req.user.username });
 });

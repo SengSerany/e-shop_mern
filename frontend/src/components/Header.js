@@ -1,10 +1,30 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, resetAuthState } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Header() {
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isUnlogged } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(resetAuthState());
+  };
+
+  useEffect(() => {
+    if (isUnlogged) {
+      navigate('/');
+      toast.success('Your are unlogged !');
+    }
+
+    dispatch(resetAuthState());
+  }, [dispatch, isUnlogged, navigate]);
 
   return (
     <header>
@@ -46,9 +66,9 @@ function Header() {
                 </Link>
               </Nav.Item>
               <Nav.Item>
-                <Link to="/">
+                <button className="btn-logout" onClick={handleLogout}>
                   <FaSignOutAlt /> Log out
-                </Link>
+                </button>
               </Nav.Item>
             </>
           ) : (

@@ -9,7 +9,7 @@ function Profile() {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(handleSession('/profile'));
+    dispatch(handleSession('profile'));
     if (user.id === null) {
       navigate('/login');
     }

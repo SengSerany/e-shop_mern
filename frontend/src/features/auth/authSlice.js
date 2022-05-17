@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
 const initialState = {
-  user: { _id: null, username: null, email: null },
+  user: { id: null, username: null, email: null },
   isError: false,
   isSuccess: false,
   isLoading: false,
+  isUnlogged: false,
   message: '',
 };
 
@@ -27,6 +28,7 @@ export const register = createAsyncThunk(
   }
 );
 
+// Login
 export const login = createAsyncThunk(
   'auth/login',
   async (userData, thunkAPI) => {
@@ -44,6 +46,7 @@ export const login = createAsyncThunk(
   }
 );
 
+// handle Session
 export const handleSession = createAsyncThunk(
   'auth/session',
   async (endpoint, thunkAPI) => {
@@ -61,6 +64,7 @@ export const handleSession = createAsyncThunk(
   }
 );
 
+// Logout
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     return await authService.logout();
@@ -81,6 +85,7 @@ export const authSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
+      state.isUnlogged = false;
       state.message = '';
     },
   },
@@ -122,8 +127,10 @@ export const authSlice = createSlice({
           email: action.payload.email,
         };
       })
-      .addCase(handleSession.rejected, (state) => {
-        state.user = null;
+      .addCase(handleSession.rejected, (state) => {})
+      .addCase(logout.fulfilled, (state) => {
+        state.user = { id: null, username: null, email: null };
+        state.isUnlogged = true;
       });
   },
 });
