@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { handleSession } from '../features/auth/authSlice';
+import { useSelector } from 'react-redux';
 
 function Profile() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(handleSession('profile'));
     if (user.id === null) {
       navigate('/login');
     }

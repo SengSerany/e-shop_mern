@@ -3,7 +3,11 @@ import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, resetAuthState } from '../features/auth/authSlice';
+import {
+  handleSession,
+  logout,
+  resetAuthState,
+} from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -18,9 +22,10 @@ function Header() {
   };
 
   useEffect(() => {
+    dispatch(handleSession('profile'));
     if (isUnlogged) {
       navigate('/');
-      toast.success('Your are unlogged !');
+      toast.success('Your are logout !');
     }
 
     dispatch(resetAuthState());
