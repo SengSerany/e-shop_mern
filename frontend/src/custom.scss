@@ -23,11 +23,15 @@ body {
 
 .nav-item a {
   color: #000000;
-  text-decoration: none;
+}
+
+a {
+  text-decoration: none !important;
+  color: #000000 !important;
 }
 
 a:hover {
-  color: #808080;
+  color: #092ea7 !important;
 }
 
 header {
@@ -92,8 +96,12 @@ header {
   letter-spacing: 0.02rem;
 }
 
-.card p {
+.card p.p-store {
   font-size: 0.75rem;
+}
+
+.card p.p-cart {
+  font-size: 1rem;
 }
 
 .card-img-top {
@@ -113,7 +121,7 @@ header {
 }
 
 .product-card-body {
-  background-color: rgba($color: #072896, $alpha: 0.5);
+  background-color: rgba($color: #092ea7, $alpha: 0.5);
   height: 100%;
   width: 100%;
   padding: 1rem;
@@ -145,6 +153,22 @@ header {
   height: 25rem;
 }
 
+.img-cart {
+  border-radius: 0.3rem 0.3rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 6rem;
+  overflow: hidden;
+}
+
+.em-author-cart {
+  font-size: 1rem;
+}
+
+.total-price {
+  color: #09a76a;
+}
 @media (max-width: 992px) {
   .form-register {
     margin-top: 0;

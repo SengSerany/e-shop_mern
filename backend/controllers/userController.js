@@ -49,7 +49,6 @@ const createUserAccount = asyncHandler(async (req, res) => {
 const createUserSession = asyncHandler(async (req, res) => {
   let newUserCart;
   const currentUserCart = await Cart.findOne({ user: req.user.id });
-  console.log(currentUserCart);
   if (!currentUserCart) {
     newUserCart = await Cart.create({ user: req.user.id });
   }

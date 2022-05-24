@@ -3,6 +3,7 @@ import cartService from './cartService';
 
 const initialState = {
   cart: null,
+  productsInCart: [],
   cartError: false,
   cartSuccess: false,
   cartLoading: false,
@@ -43,7 +44,8 @@ export const cartSlice = createSlice({
         state.cartLoading = false;
         state.cartError = false;
         state.cartSuccess = true;
-        state.cart = action.payload._id;
+        state.cart = action.payload.card;
+        state.productsInCart = action.payload.products;
       })
       .addCase(getMyCart.rejected, (state) => {
         state.cartLoading = false;

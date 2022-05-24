@@ -8,6 +8,7 @@ import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getMyCart } from '../features/cart/cartSlice';
 import {
   getIndexProducts,
   resetProductState,
@@ -30,6 +31,17 @@ function Header() {
   const { productSuccess, productError, productMessage } = useSelector(
     (state) => state.product
   );
+  const { productsInCart } = useSelector((state) => state.cart);
+
+  const qtyProdSelected = () => {
+    if (productsInCart && productsInCart.length > 0) {
+      let counter = 0;
+      productsInCart.map((product) => {
+        return (counter += product.quantity);
+      });
+      return counter;
+    }
+  };
 
   const handleLogout = (e) => {
     dispatch(logout());
@@ -37,10 +49,6 @@ function Header() {
   };
 
   useEffect(() => {
-    if (user.id === null && !isUnlogged) {
-      dispatch(handleSession('profile'));
-    }
-
     if (isUnlogged) {
       navigate('/');
       toast.success(message);
@@ -88,9 +96,13 @@ function Header() {
   }, [isError, isSuccess, isUnlogged, productSuccess, productError]);
 
   useEffect(() => {
+    if (user.id !== null) {
+      dispatch(getMyCart());
+    }
     dispatch(getIndexProducts());
+    dispatch(handleSession('profile'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user.id]);
 
   return (
     <header>
@@ -131,7 +143,7 @@ function Header() {
               <Nav.Item>
                 <Link to="/cart">
                   <FaCartArrowDown />
-                  <em className="">0</em>
+                  <em className="">{qtyProdSelected()}</em>
                 </Link>
               </Nav.Item>
               <Nav.Item>

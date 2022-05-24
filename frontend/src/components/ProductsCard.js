@@ -32,7 +32,7 @@ function ProductsCard({ product }) {
           <div className={`${!active && 'd-none'} product-card-body`}>
             <Card.Body className={``}>
               <Card.Title>{product.title}</Card.Title>
-              <Card.Text>
+              <Card.Text className="p-store">
                 {`Artist : ${product.author}`}
                 <br />
                 {`Medium : ${product.medium}`}
