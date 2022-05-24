@@ -1,8 +1,12 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  getIndexProducts,
+  resetProductState,
+} from '../features/product/productSlice';
 import {
   handleSession,
   logout,
@@ -14,22 +18,74 @@ import { toast } from 'react-toastify';
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isUnlogged } = useSelector((state) => state.auth);
+  const location = useLocation();
+  const { user, isSuccess, isError, isUnlogged, message } = useSelector(
+    (state) => state.auth
+  );
+  const { productSuccess, productError, productMessage } = useSelector(
+    (state) => state.product
+  );
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
     dispatch(logout());
     dispatch(resetAuthState());
   };
 
   useEffect(() => {
-    dispatch(handleSession('profile'));
-    if (isUnlogged) {
-      navigate('/');
-      toast.success('Your are logout !');
+    if (user.id === null && !isUnlogged) {
+      dispatch(handleSession('profile'));
     }
 
-    dispatch(resetAuthState());
-  }, [dispatch, isUnlogged, navigate]);
+    if (isUnlogged) {
+      navigate('/');
+      toast.success(message);
+    }
+
+    if (isError || productError) {
+      if (message !== '') {
+        toast.error(message);
+      } else if (productMessage !== '') {
+        toast.error(productMessage);
+      }
+    }
+
+    if (isSuccess || productSuccess) {
+      if (location.pathname === '/login') {
+        navigate('/');
+      } else if (location.pathname === '/register') {
+        navigate('/login');
+      }
+    }
+
+    if (message !== '' && isSuccess) {
+      toast.success(message);
+    } else if (productMessage !== '') {
+      toast.success(productMessage);
+    }
+
+    if (user.id !== null && location.pathname === '/login') {
+      navigate('/');
+    }
+
+    if (user.id !== null && location.pathname === '/register') {
+      navigate('/');
+    }
+
+    if (isError || isSuccess || isUnlogged || message !== '') {
+      dispatch(resetAuthState());
+    }
+
+    if (productError || productSuccess) {
+      dispatch(resetProductState());
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError, isSuccess, isUnlogged, productSuccess, productError]);
+
+  useEffect(() => {
+    dispatch(getIndexProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header>
@@ -39,7 +95,9 @@ function Header() {
           <Nav className="mx-auto">
             <Row>
               <Col>
-                <Nav.Link eventkey="link-1">Store</Nav.Link>
+                <Link className="nav-link" eventkey="link-1" to="/store">
+                  Store
+                </Link>
               </Col>
               <Col>
                 <Nav.Link eventkey="link-2">Exhibitions</Nav.Link>

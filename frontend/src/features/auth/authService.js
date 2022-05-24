@@ -21,7 +21,7 @@ const handleSession = async (endpoint) => {
   if (data.user) {
     return data.user;
   } else {
-    return { _id: null, username: null, email: null };
+    return { _id: null, username: null };
   }
 };
 
