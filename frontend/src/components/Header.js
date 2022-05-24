@@ -1,4 +1,9 @@
-import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import {
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUser,
+  FaCartArrowDown,
+} from 'react-icons/fa';
 import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -123,6 +128,11 @@ function Header() {
         <Nav className="justify-content-end" activeKey="/home">
           {user.id !== null ? (
             <>
+              <Nav.Item>
+                <Link to="/cart">
+                  <FaCartArrowDown />
+                </Link>
+              </Nav.Item>
               <Nav.Item>
                 <Link to="/profile">
                   <FaUser /> {user.username}

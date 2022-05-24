@@ -14,6 +14,7 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/productRoutes.js');
 const homepageRouter = require('./routes/homepageRoutes');
+const cartRouter = require('./routes/cartRoutes');
 
 connectDB();
 const app = express();
@@ -41,6 +42,7 @@ app.use(passport.session());
 // Routes
 app.use('/api/v1/', homepageRouter);
 app.use('/api/v1/products', productRouter);
+app.use('/api/v1/users/cart', cartRouter);
 app.use('/api/v1/users', userRouter);
 
 // Session
