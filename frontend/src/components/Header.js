@@ -131,6 +131,7 @@ function Header() {
               <Nav.Item>
                 <Link to="/cart">
                   <FaCartArrowDown />
+                  <em className="">0</em>
                 </Link>
               </Nav.Item>
               <Nav.Item>
@@ -160,6 +161,7 @@ function Header() {
           )}
         </Nav>
       </Container>
+      <br />
     </header>
   );
 }

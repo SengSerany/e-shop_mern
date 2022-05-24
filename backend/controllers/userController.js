@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
+const Cart = require('../models/cartModel');
 
 // POST - Create user account
 const createUserAccount = asyncHandler(async (req, res) => {
@@ -23,18 +24,20 @@ const createUserAccount = asyncHandler(async (req, res) => {
   await User.register(
     new User({ username, email }),
     req.body.password,
-    (err, user) => {
+    async (err, user) => {
       if (err) {
         console.log('error while user register!', err);
         res.status(400);
         throw new Error('Your account could not be saved');
       } else {
+        const userCart = await Cart.create({ user: user._id });
         res.status(200).json({
           endpoint: 'Register user',
           user: {
             id: user._id,
             username: user.username,
             email: user.email,
+            cart: userCart._id,
           },
         });
       }
@@ -44,11 +47,22 @@ const createUserAccount = asyncHandler(async (req, res) => {
 
 // POST - Create user session
 const createUserSession = asyncHandler(async (req, res) => {
+  let newUserCart;
+  const currentUserCart = await Cart.findOne({ user: req.user.id });
+  console.log(currentUserCart);
+  if (!currentUserCart) {
+    newUserCart = await Cart.create({ user: req.user.id });
+  }
+
   res
     .status(200)
     .cookie('userid', req.user.id, { maxAge: 2592000000 })
     .cookie('username', req.user.username, { maxAge: 2592000000 })
-    .json({ endpoint: 'Login user', user: req.user });
+    .json({
+      endpoint: 'Login user',
+      user: req.user,
+      cart: newUserCart ? newUserCart._id : currentUserCart._id,
+    });
 });
 
 // GET - Show user account
