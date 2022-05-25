@@ -19,7 +19,7 @@ function Cart() {
       const infosProduct = products.find(
         (product) => product._id === linkProductCart.product
       );
-      return (calcPrice += linkProductCart.quantity * infosProduct.price);
+      return (calcPrice += infosProduct.price);
     });
 
     const calcRoundPrice = Math.round((calcPrice + Number.EPSILON) * 100) / 100;
@@ -76,7 +76,7 @@ function Cart() {
               <ProductsCardInCart
                 key={`cart-${productElement._id}`}
                 product={productElement}
-                quantity={productSelected.quantity}
+                linkID={productSelected._id}
               />
             );
           })}
@@ -93,7 +93,7 @@ function Cart() {
               <strong>{totalVAT} €</strong>
             </Col>
           </Row>
-          <Row className="justify-content-center">
+          <Row className="justify-content-end">
             <Col sm="auto">
               <br />
               <Button variant="success">Command</Button>

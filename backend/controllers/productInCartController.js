@@ -19,6 +19,17 @@ const addProductInCart = asyncHandler(async (req, res) => {
   }
 });
 
+const subProductInCart = asyncHandler(async (req, res) => {
+  const productInCartExist = await ProductInCart.findById(req.body.linkID);
+  if (!productInCartExist) {
+    res.status(400);
+    throw new Error('An error as occur: this item is not in your cart');
+  }
+  await productInCartExist.remove();
+  res.status(200).json(productInCartExist._id);
+});
+
 module.exports = {
   addProductInCart,
+  subProductInCart,
 };

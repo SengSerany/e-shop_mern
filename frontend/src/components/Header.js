@@ -8,7 +8,7 @@ import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getMyCart } from '../features/cart/cartSlice';
+import { getMyCart, resetCartState } from '../features/cart/cartSlice';
 import {
   getIndexProducts,
   resetProductState,
@@ -31,14 +31,13 @@ function Header() {
   const { productSuccess, productError, productMessage } = useSelector(
     (state) => state.product
   );
-  const { productsInCart } = useSelector((state) => state.cart);
+  const { productsInCart, cartSuccess, cartError, cartMessage } = useSelector(
+    (state) => state.cart
+  );
 
   const qtyProdSelected = () => {
     if (productsInCart && productsInCart.length > 0) {
-      let counter = 0;
-      productsInCart.map((product) => {
-        return (counter += product.quantity);
-      });
+      let counter = productsInCart.length;
       return counter;
     }
   };
@@ -54,11 +53,13 @@ function Header() {
       toast.success(message);
     }
 
-    if (isError || productError) {
+    if (isError || productError || cartError) {
       if (message !== '') {
         toast.error(message);
       } else if (productMessage !== '') {
         toast.error(productMessage);
+      } else if (cartError !== '') {
+        toast.error(cartMessage);
       }
     }
 
@@ -72,8 +73,14 @@ function Header() {
 
     if (message !== '' && isSuccess) {
       toast.success(message);
-    } else if (productMessage !== '') {
+    }
+
+    if (productMessage !== '' && productSuccess) {
       toast.success(productMessage);
+    }
+
+    if (cartMessage !== '' && cartSuccess) {
+      toast.success(cartMessage);
     }
 
     if (user.id !== null && location.pathname === '/login') {
@@ -92,8 +99,19 @@ function Header() {
       dispatch(resetProductState());
     }
 
+    if ((cartSuccess, cartError)) {
+      dispatch(resetCartState());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError, isSuccess, isUnlogged, productSuccess, productError]);
+  }, [
+    isError,
+    isSuccess,
+    isUnlogged,
+    productSuccess,
+    productError,
+    cartSuccess,
+    cartError,
+  ]);
 
   useEffect(() => {
     if (user.id !== null) {

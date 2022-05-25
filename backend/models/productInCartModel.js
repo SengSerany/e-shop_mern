@@ -12,10 +12,6 @@ const ProductInCartSchema = new mongoose.Schema(
       required: true,
       ref: 'Product',
     },
-    quantity: {
-      type: Number,
-      default: 1,
-    },
   },
   {
     timestamps: true,

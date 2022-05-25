@@ -24,6 +24,40 @@ export const getMyCart = createAsyncThunk('cart/get', async (_, thunkAPI) => {
   }
 });
 
+export const addInCart = createAsyncThunk(
+  'cart/prodAdd',
+  async (linkObj, thunkAPI) => {
+    try {
+      return await cartService.addProduct(linkObj);
+    } catch (error) {
+      const cartMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.cartMessage) ||
+        error.cartMessage ||
+        error.toString();
+      return thunkAPI.rejectWithValue(cartMessage);
+    }
+  }
+);
+
+export const removeFromCart = createAsyncThunk(
+  'cart/prodDelete',
+  async (linkID, thunkAPI) => {
+    try {
+      return await cartService.removeProduct(linkID);
+    } catch (error) {
+      const cartMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.cartMessage) ||
+        error.cartMessage ||
+        error.toString();
+      return thunkAPI.rejectWithValue(cartMessage);
+    }
+  }
+);
+
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -44,14 +78,48 @@ export const cartSlice = createSlice({
         state.cartLoading = false;
         state.cartError = false;
         state.cartSuccess = true;
-        state.cart = action.payload.card;
+        state.cart = action.payload.cart;
         state.productsInCart = action.payload.products;
       })
-      .addCase(getMyCart.rejected, (state) => {
+      .addCase(getMyCart.rejected, (state, action) => {
         state.cartLoading = false;
         state.cartError = true;
         state.cartSuccess = true;
-        state.cartMessage = "There is an error: can't load cart";
+        state.cartMessage = action.payload;
+      })
+      .addCase(addInCart.pending, (state) => {
+        state.cartLoading = true;
+      })
+      .addCase(addInCart.fulfilled, (state, action) => {
+        state.cartLoading = false;
+        state.cartError = false;
+        state.cartSuccess = true;
+        state.cartMessage = 'You have succefully add an item to your cart';
+        state.productsInCart.push(action.payload);
+      })
+      .addCase(addInCart.rejected, (state, action) => {
+        state.cartLoading = false;
+        state.cartError = true;
+        state.cartSuccess = false;
+        state.cartMessage = action.payload;
+      })
+      .addCase(removeFromCart.pending, (state) => {
+        state.cartLoading = true;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.cartLoading = false;
+        state.cartError = false;
+        state.cartSuccess = true;
+        state.cartMessage = 'You have remove an item to your cart';
+        state.productsInCart = state.productsInCart.filter(
+          (product) => product._id !== action.payload
+        );
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
+        state.cartLoading = false;
+        state.cartError = true;
+        state.cartSuccess = false;
+        state.cartMessage = action.payload;
       });
   },
 });

@@ -1,10 +1,18 @@
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
+import { removeFromCart } from '../features/cart/cartSlice';
 
-function ProductsCardInCart({ product, quantity }) {
+function ProductsCardInCart({ product, linkID }) {
+  const dispatch = useDispatch();
   function priceWithSpaces(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   }
+
+  const handleRemove = (e) => {
+    e.preventDefault();
+    dispatch(removeFromCart(linkID));
+  };
   return (
     <Col>
       <Link to={`/store/products/${product._id}`} className="link-cart">
@@ -34,7 +42,13 @@ function ProductsCardInCart({ product, quantity }) {
                 </Col>
                 <Col>
                   <Card.Text className="p-cart text-on-right">
-                    x{quantity}
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={handleRemove}
+                    >
+                      Remove
+                    </Button>
                   </Card.Text>
                 </Col>
               </Row>

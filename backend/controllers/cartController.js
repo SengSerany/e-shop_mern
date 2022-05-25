@@ -9,7 +9,7 @@ const getCart = asyncHandler(async (req, res) => {
   });
   res
     .status(200)
-    .json({ card: currentCart._id, products: currentSelectedProds });
+    .json({ cart: currentCart._id, products: currentSelectedProds });
 });
 
 module.exports = {
