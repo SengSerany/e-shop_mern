@@ -99,7 +99,7 @@ function Header() {
       dispatch(resetProductState());
     }
 
-    if ((cartSuccess, cartError)) {
+    if (cartSuccess || cartError) {
       dispatch(resetCartState());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,6 +111,9 @@ function Header() {
     productError,
     cartSuccess,
     cartError,
+    message,
+    productMessage,
+    cartMessage,
   ]);
 
   useEffect(() => {

@@ -13,6 +13,11 @@ body {
   padding-bottom: 2rem;
 }
 
+h2 {
+  font-family: 'Koulen', cursive;
+  font-size: 2.5rem !important;
+}
+
 .text-on-right {
   text-align: end;
 }
@@ -32,6 +37,11 @@ a {
 
 a:hover {
   color: #092ea7 !important;
+}
+
+a.btn {
+  color: #ffffff !important;
+  text-shadow: none;
 }
 
 header {
@@ -94,6 +104,7 @@ header {
   font-family: 'Koulen', cursive;
   font-size: 1.75rem;
   letter-spacing: 0.02rem;
+  margin: 0 0 -0.1rem 0;
 }
 
 .card p.p-store {
@@ -109,15 +120,17 @@ header {
 }
 
 .index-product-image {
-  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
   width: 18rem;
-  height: 12rem;
+  height: 15rem;
   overflow: hidden;
-  box-shadow: 0 70px 63px -60px #0000003b;
   border-radius: 10px;
+}
+
+.index-product-image img {
+  height: auto;
+  align-self: center;
 }
 
 .product-card-body {
@@ -128,6 +141,39 @@ header {
   position: absolute;
   color: #ffffff;
   border-radius: 10px;
+}
+
+.em-card-author {
+  font-size: 1.1rem;
+}
+
+.carousel-item {
+  height: 30rem;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-carousel {
+  position: absolute;
+  width: 90vw;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.carousel-caption {
+  text-shadow: rgb(0, 0, 0) 1px 0 10px;
+  font-family: 'Koulen', cursive;
+}
+
+.carousel-caption h3 {
+  font-family: 'Koulen', cursive;
 }
 
 .hide-item {

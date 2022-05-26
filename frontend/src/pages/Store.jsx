@@ -1,6 +1,7 @@
-import ProductsCard from '../components/ProductsCard.js';
-import { Row, Col, Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { Row, Col, Spinner } from 'react-bootstrap';
+import ProductsCard from '../components/ProductsCard.js';
+import CarouselElement from '../components/CarouselElement.js';
 
 function Store() {
   const { products, productLoading } = useSelector((state) => state.product);
@@ -20,12 +21,22 @@ function Store() {
     );
   }
 
+  const lastsProds = products.slice(0, 3);
+
   return (
     <>
       <div>
         <h1 className="h1 text-center">Store</h1>
+
+        <CarouselElement products={lastsProds} />
         <br />
-        <br />
+        <Row className="justify-content-center">
+          <Col md="auto">
+            <br />
+            <h2>All art pieces</h2>
+            <br />
+          </Col>
+        </Row>
         <Row className="justify-content-center">
           {products.length > 0 &&
             products.map((product) => (

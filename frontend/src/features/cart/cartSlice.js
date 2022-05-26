@@ -94,8 +94,8 @@ export const cartSlice = createSlice({
         state.cartLoading = false;
         state.cartError = false;
         state.cartSuccess = true;
-        state.cartMessage = 'You have succefully add an item to your cart';
-        state.productsInCart.push(action.payload);
+        state.cartMessage = `You have succefully add "${action.payload.title}" to your cart`;
+        state.productsInCart.push(action.payload.link);
       })
       .addCase(addInCart.rejected, (state, action) => {
         state.cartLoading = false;
@@ -110,9 +110,9 @@ export const cartSlice = createSlice({
         state.cartLoading = false;
         state.cartError = false;
         state.cartSuccess = true;
-        state.cartMessage = 'You have remove an item to your cart';
+        state.cartMessage = `You have remove "${action.payload.title}" to your cart`;
         state.productsInCart = state.productsInCart.filter(
-          (product) => product._id !== action.payload
+          (product) => product._id !== action.payload.id
         );
       })
       .addCase(removeFromCart.rejected, (state, action) => {
