@@ -68,6 +68,13 @@ export const cartSlice = createSlice({
       state.cartLoading = false;
       state.cartMessage = '';
     },
+    validateCart: (state) => {
+      state.productsInCart = [];
+      state.cartError = false;
+      state.cartSuccess = false;
+      state.cartLoading = false;
+      state.cartMessage = '';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -124,6 +131,6 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { resetCartState } = cartSlice.actions;
+export const { validateCart, resetCartState } = cartSlice.actions;
 
 export default cartSlice.reducer;

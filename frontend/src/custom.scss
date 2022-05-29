@@ -18,12 +18,21 @@ h2 {
   font-size: 2.5rem !important;
 }
 
+h3 {
+  font-family: 'Koulen', cursive;
+  font-size: 1.5rem !important;
+}
+
 .text-on-right {
   text-align: end;
 }
 
 .space-right {
   margin-right: 0.5rem;
+}
+
+.no-margin {
+  margin: 0;
 }
 
 .nav-item a {
@@ -215,6 +224,25 @@ header {
 .total-price {
   color: #09a76a;
 }
+
+#selected-adress {
+  background-color: #ececec;
+}
+
+#selected-adress p {
+  color: #797979;
+}
+
+.p-empty-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 50rem;
+  color: #686868;
+  background-color: #d8d8d8;
+}
+
 @media (max-width: 992px) {
   .form-register {
     margin-top: 0;

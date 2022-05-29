@@ -18,6 +18,7 @@ const cartRouter = require('./routes/cartRoutes');
 const ProductInCartRouter = require('./routes/productInCartRoutes');
 const productInCartModel = require('./models/productInCartModel');
 const productInCartRouter = require('./routes/productInCartRoutes');
+const orderRouter = require('./routes/orderRoutes');
 
 connectDB();
 const app = express();
@@ -47,6 +48,7 @@ app.use('/api/v1/', homepageRouter);
 app.use('/api/v1/products/cart', productInCartRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users/cart', cartRouter);
+app.use('/api/v1/users/orders', orderRouter);
 app.use('/api/v1/users', userRouter);
 
 // Session

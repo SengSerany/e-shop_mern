@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getMyCart } from '../features/cart/cartSlice';
 import { Row, Col, Spinner, Button } from 'react-bootstrap';
 import ProductsCardInCart from '../components/ProductCardInCart';
-import { getMyCart } from '../features/cart/cartSlice';
 
 function Cart() {
   const { productsInCart, cartLoading } = useSelector((state) => state.cart);
@@ -46,18 +47,35 @@ function Cart() {
     return calcRoundVAT;
   };
 
-  const [totalPrice, setTotalPrice] = useState(
-    priceWithSpaces(calcTotalPrice())
-  );
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  const [totalVAT, setTotalVAT] = useState(priceWithSpaces(calcVATPrice()));
+  const [totalVAT, setTotalVAT] = useState(0);
 
   useEffect(() => {
     if (productsInCart === []) {
       dispatch(getMyCart());
     }
+    setTotalPrice(priceWithSpaces(calcTotalPrice()));
+    setTotalVAT(priceWithSpaces(calcVATPrice()));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [productsInCart]);
+
+  if (productsInCart.length < 1) {
+    return (
+      <div>
+        <h1 className="h1 text-center">My cart</h1>
+        <br />
+        <Row className="justify-content-center">
+          <Col md="auto">
+            <p className="text-center p-empty-cart">
+              You cart is empty! <br />
+              Go to the store to select the art pieces you likes !
+            </p>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -96,7 +114,9 @@ function Cart() {
           <Row className="justify-content-end">
             <Col sm="auto">
               <br />
-              <Button variant="success">Command</Button>
+              <Link to="/orders/new">
+                <Button variant="success">Command</Button>
+              </Link>
             </Col>
           </Row>
         </Col>

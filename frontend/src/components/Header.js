@@ -13,6 +13,7 @@ import {
   getIndexProducts,
   resetProductState,
 } from '../features/product/productSlice';
+import { getIndexOrders, resetOrderState } from '../features/order/orderSlice';
 import {
   handleSession,
   logout,
@@ -34,6 +35,9 @@ function Header() {
   const { productsInCart, cartSuccess, cartError, cartMessage } = useSelector(
     (state) => state.cart
   );
+  const { orderSuccess, orderError, orderMessage } = useSelector(
+    (state) => state.order
+  );
 
   const qtyProdSelected = () => {
     if (productsInCart && productsInCart.length > 0) {
@@ -48,7 +52,7 @@ function Header() {
   };
 
   useEffect(() => {
-    if (isUnlogged) {
+    if (message !== '' && isUnlogged) {
       navigate('/');
       toast.success(message);
     }
@@ -60,6 +64,8 @@ function Header() {
         toast.error(productMessage);
       } else if (cartError !== '') {
         toast.error(cartMessage);
+      } else if (orderError !== '') {
+        toast.error(orderMessage);
       }
     }
 
@@ -83,6 +89,10 @@ function Header() {
       toast.success(cartMessage);
     }
 
+    if (orderMessage !== '' && orderSuccess) {
+      toast.success(cartMessage);
+    }
+
     if (user.id !== null && location.pathname === '/login') {
       navigate('/');
     }
@@ -102,6 +112,10 @@ function Header() {
     if (cartSuccess || cartError) {
       dispatch(resetCartState());
     }
+
+    if (orderSuccess || orderError) {
+      dispatch(resetOrderState());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isError,
@@ -114,11 +128,15 @@ function Header() {
     message,
     productMessage,
     cartMessage,
+    orderSuccess,
+    orderError,
+    orderMessage,
   ]);
 
   useEffect(() => {
     if (user.id !== null) {
       dispatch(getMyCart());
+      dispatch(getIndexOrders());
     }
     dispatch(getIndexProducts());
     dispatch(handleSession('profile'));

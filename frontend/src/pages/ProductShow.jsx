@@ -18,7 +18,6 @@ function ProductShow() {
   const priceWithSpaces = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
-  console.log(user.id === null);
   const handleAddCart = () => {
     if (user.id === null) {
       navigate('/login');

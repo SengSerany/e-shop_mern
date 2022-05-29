@@ -15,6 +15,8 @@ import Profile from './pages/Profile';
 import Store from './pages/Store';
 import ProductShow from './pages/ProductShow';
 import Cart from './pages/Cart';
+import NewOrder from './pages/NewOrder.jsx';
+import OrderValidate from './pages/OrderValidate';
 
 function App() {
   return (
@@ -29,6 +31,12 @@ function App() {
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/profile" element={<Profile />} />
               <Route exact path="/cart" element={<Cart />} />
+              <Route exact path="/orders/new" element={<NewOrder />} />
+              <Route
+                exact
+                path="/orders/:id/validate"
+                element={<OrderValidate />}
+              />
               <Route
                 exact
                 path="/store/products/:id"
